@@ -14,11 +14,13 @@ namespace DrawableGrid.Components
         public void Hide()
         {
             Line.Visibility = Visibility.Hidden;
+            Label.Visibility = Visibility.Hidden;
         }
 
         public void Show()
         {
             Line.Visibility = Visibility.Visible;
+            Label.Visibility = Visibility.Visible;
         }
     }
 }

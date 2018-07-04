@@ -14,6 +14,11 @@ namespace DrawableGrid.Utilities
             return Math.Sqrt(d1.X * d1.X + d1.Y * d1.Y);
         }
 
+        public static Point MidPoint(Point pointA, Point pointB)
+        {
+            return new Point((pointA.X + pointB.X) / 2, (pointA.Y + pointB.Y) / 2);
+        }
+
         public static PointToLineDistance GetClosestPointOnLineSegment(Point point, Line line)
         {
             var P = new Vector(point.X, point.Y);
