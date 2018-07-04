@@ -27,6 +27,7 @@ namespace DrawableGrid.controls
         private bool _isDrawing = false;
         private readonly Line _previewLine;
         private Point _drawEnterPoint;
+        private List<Line> _lines = new List<Line>();
 
         public DrawableGridControl()
         {
@@ -48,7 +49,9 @@ namespace DrawableGrid.controls
         private void Grid_MouseUp(object sender, MouseButtonEventArgs e)
         {
             var drawReleasePoint = e.GetPosition(this);
+
             CreateLineInMainGrid(_drawEnterPoint, drawReleasePoint);
+
             _isDrawing = false;
             _previewLine.Visibility = Visibility.Hidden;
         }
@@ -65,6 +68,7 @@ namespace DrawableGrid.controls
                 StrokeThickness = 2
             };
             SnapToGrid(line);
+            _lines.Add(line);
             return MainGrid.Children.Add(line);
         }
 
