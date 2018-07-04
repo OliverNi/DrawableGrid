@@ -37,7 +37,6 @@ namespace DrawableGrid.Components
 
         public PointToLineDistance DistanceFrom(Point point)
         {
-            //@TODO calculate shortest distance from point to line
             return LineUtilities.GetClosestPointOnLineSegment(point, Line);
         }
 

@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Specialized;
 using System.Windows;
-using System.Windows.Media.Media3D;
 using System.Windows.Shapes;
-using DrawableGrid.Components;
 using DrawableGrid.Models;
 
 namespace DrawableGrid.Utilities
@@ -34,7 +31,6 @@ namespace DrawableGrid.Utilities
                 var pointOnLine = AsPoint(A);
                 return new PointToLineDistance(Distance(point, pointOnLine), pointOnLine);
             }
-
             if (distance > 1)
             {
                 var pointOnLine = AsPoint(B);
