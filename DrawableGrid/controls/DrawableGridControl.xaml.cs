@@ -25,7 +25,7 @@ namespace DrawableGrid.controls
     /// </summary>
     public partial class DrawableGridControl : UserControl
     {
-        private static readonly int GRID_SIZE = 50;
+        private static readonly int GRID_SIZE = 20;
         private bool _isDrawing = false;
         private readonly PreviewLine _previewLine;
         private Point _drawEnterPoint;
