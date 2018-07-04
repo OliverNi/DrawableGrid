@@ -68,6 +68,9 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Components\DrawableLine.cs" />
+    <Compile Include="Components\PreviewLine.cs" />
+    <Compile Include="Components\SnappableLine.cs" />
     <Compile Include="Controls\DrawableGridControl.xaml.cs">
       <DependentUpon>DrawableGridControl.xaml</DependentUpon>
     </Compile>
@@ -102,8 +105,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Components\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
