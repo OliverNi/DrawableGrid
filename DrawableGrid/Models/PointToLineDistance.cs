@@ -4,10 +4,10 @@ namespace DrawableGrid.Models
 {
     public class PointToLineDistance
     {
-        public int Distance { get; }
+        public double Distance { get; }
         public Point ClosestPointInLine { get; }
 
-        public PointToLineDistance(int distance, Point closestPointInLine)
+        public PointToLineDistance(double distance, Point closestPointInLine)
         {
             Distance = distance;
             ClosestPointInLine = closestPointInLine;
