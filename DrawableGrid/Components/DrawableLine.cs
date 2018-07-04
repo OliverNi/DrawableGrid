@@ -8,7 +8,7 @@ namespace DrawableGrid.Components
 {
     public class DrawableLine : Canvas
     {
-        protected Line Line { get; }
+        public Line Line { get; }
 
         public DrawableLine(Point start, Point end)
             : this(start, end, Brushes.Black) { }

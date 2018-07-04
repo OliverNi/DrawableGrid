@@ -71,7 +71,7 @@ namespace DrawableGrid.controls
         private void RenderPreviewLine()
         {
             var currentMousePosition = Mouse.GetPosition(this);
-            _previewLine.Move(_drawEnterPoint, currentMousePosition);
+            _lineManager.MoveLine(_previewLine, _drawEnterPoint, currentMousePosition);
         }
     }
 }

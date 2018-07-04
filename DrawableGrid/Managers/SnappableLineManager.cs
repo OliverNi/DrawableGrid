@@ -8,13 +8,14 @@ namespace DrawableGrid.Managers
 {
     public class SnappableLineManager
     {
-        private int _snapDistance = 20;
-        private List<SnappableLine> _lines = new List<SnappableLine>();
+        private readonly double _snapDistance = 20;
+        private readonly List<SnappableLine> _lines = new List<SnappableLine>();
 
         public SnappableLine CreateLine(Point start, Point end, int gridSize)
         {
             var line = new SnappableLine(start, end, gridSize);
             SnapLineEndIfItIsCloseToAnotherLine(line, start, end);
+            _lines.Add(line);
             return line;
         }
 
@@ -39,7 +40,7 @@ namespace DrawableGrid.Managers
 
         private void SnapLineEndToPoint(SnappableLine line, Point start, Point snapPoint)
         {
-            line.Move(start, snapPoint);
+            line.Move(start, snapPoint, false);
         }
 
         private bool IsCloseEnoughToSnap(PointToLineDistance distance)
