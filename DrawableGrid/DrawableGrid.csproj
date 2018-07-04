@@ -80,6 +80,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Managers\SnappableLineManager.cs" />
+    <Compile Include="Models\PointToLineDistance.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

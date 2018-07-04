@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using DrawableGrid.Components;
+using DrawableGrid.Managers;
 using Brushes = System.Windows.Media.Brushes;
 using Point = System.Windows.Point;
 
@@ -28,7 +29,7 @@ namespace DrawableGrid.controls
         private bool _isDrawing = false;
         private readonly PreviewLine _previewLine;
         private Point _drawEnterPoint;
-        private List<SnappableLine> _lines = new List<SnappableLine>();
+        private readonly SnappableLineManager _lineManager = new SnappableLineManager();
 
         public DrawableGridControl()
         {
@@ -54,11 +55,10 @@ namespace DrawableGrid.controls
             _previewLine.Hide();
         }
 
-        private int CreateLineInMainGrid(Point beginning, Point end)
+        private void CreateLineInMainGrid(Point beginning, Point end)
         {
-            var line = new SnappableLine(beginning, end, GRID_SIZE);
-            _lines.Add(line);
-            return MainGrid.Children.Add(line);
+            var line = _lineManager.CreateLine(beginning, end, GRID_SIZE);
+            MainGrid.Children.Add(line);
         }
 
         private void MainGrid_MouseMove(object sender, MouseEventArgs e)

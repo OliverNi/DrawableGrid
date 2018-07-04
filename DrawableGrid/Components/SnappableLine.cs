@@ -1,6 +1,7 @@
 ﻿
 using System.Windows;
 using System.Windows.Media;
+using DrawableGrid.Models;
 
 namespace DrawableGrid.Components
 {
@@ -23,6 +24,12 @@ namespace DrawableGrid.Components
         public override void Move(Point start, Point end)
         {
             base.Move(SnappedPointOf(start, _gridSize), SnappedPointOf(end, _gridSize));
+        }
+
+        public PointToLineDistance DistanceFrom(Point point)
+        {
+            //@TODO calculate shortest distance from point to line
+            return null;
         }
 
         private static Point SnappedPointOf(Point point, int gridSize)
