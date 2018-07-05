@@ -14,7 +14,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using DrawableGrid.Components;
+using DrawableGrid.Events;
 using DrawableGrid.Managers;
+using DrawableGrid.Utilities;
 using Brushes = System.Windows.Media.Brushes;
 using Point = System.Windows.Point;
 
@@ -25,54 +27,46 @@ namespace DrawableGrid.controls
     /// </summary>
     public partial class DrawableGridControl : UserControl
     {
-        private static readonly int GRID_SIZE = 20;
-        private bool _isDrawing = false;
-        private readonly PreviewLine _previewLine;
+        private const int GridSize = 20;
+        private bool _isDrawing;
+        private bool _isEditing;
         private Point _drawEnterPoint;
-        private readonly SnappableLineManager _lineManager = new SnappableLineManager();
+        private readonly LinesManager _linesManager;
 
         public DrawableGridControl()
         {
             InitializeComponent();
-            _previewLine = new PreviewLine(GRID_SIZE);
-            MainGrid.Children.Add(_previewLine);
+            _linesManager = new LinesManager(MainGrid, GridSize);
         }
 
         private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
         {
+           if (_isDrawing || _isEditing) return;
             _isDrawing = true;
-            _previewLine.Show();
             _drawEnterPoint = e.GetPosition(this);
+            _linesManager.ActivatePreviewLineFrom(_drawEnterPoint);
         }
 
         private void Grid_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            var drawReleasePoint = e.GetPosition(this);
-
-            CreateLineInMainGrid(_drawEnterPoint, drawReleasePoint);
-
-            _isDrawing = false;
-            _previewLine.Hide();
-        }
-
-        private void CreateLineInMainGrid(Point beginning, Point end)
-        {
-            var line = _lineManager.CreateLine(beginning, end, GRID_SIZE);
-            MainGrid.Children.Add(line);
-        }
-
-        private void MainGrid_MouseMove(object sender, MouseEventArgs e)
-        {
             if (!_isDrawing) return;
 
-            RenderPreviewLine();
+            var drawReleasePoint = e.GetPosition(this);
+            var line = _linesManager.CreateSnappableLineInGrid(_drawEnterPoint, drawReleasePoint);
+            line.LineDragged += OnEditLine;
+            _isDrawing = false;
+            _linesManager.DeactivatePreviewLine();
         }
 
-        private void RenderPreviewLine()
+        private void OnEditLine(object line, LineDragEventArgs e)
         {
-            var currentMousePosition = Mouse.GetPosition(this);
-            _lineManager.MoveLine(_previewLine, _drawEnterPoint, currentMousePosition);
-            _previewLine.UpdateLabel();
+            _isEditing = true;
+            e.ResizeGrip.MouseLeftButtonUp += OnEditLineReleased;
+        }
+
+        private void OnEditLineReleased(object line, MouseButtonEventArgs e)
+        {
+            _isEditing = false;
         }
     }
 }

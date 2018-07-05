@@ -56,6 +56,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Components\LengthLabel.cs" />
+    <Compile Include="Components\LineResizeGrip.cs" />
+    <Compile Include="Events\LineDragEventArgs.cs" />
+    <Compile Include="Managers\LinesManager.cs" />
+    <Compile Include="Managers\PreviewLineManager.cs" />
     <Compile Include="Utilities\LineUtilities.cs" />
     <Page Include="Controls\DrawableGridControl.xaml">
       <SubType>Designer</SubType>

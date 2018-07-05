@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Documents;
 using DrawableGrid.Components;
 using DrawableGrid.Models;
 
@@ -8,8 +7,9 @@ namespace DrawableGrid.Managers
 {
     public class SnappableLineManager
     {
-        private readonly double _snapDistance = 20;
+        private const double SnapDistance = 20;
         private readonly List<SnappableLine> _lines = new List<SnappableLine>();
+        public SnappableLine TargetedLine { get; set; }
 
         public SnappableLine CreateLine(Point start, Point end, int gridSize)
         {
@@ -45,7 +45,7 @@ namespace DrawableGrid.Managers
 
         private bool IsCloseEnoughToSnap(PointToLineDistance distance)
         {
-            return distance.Distance <= _snapDistance;
+            return distance.Distance <= SnapDistance;
         }
     }
 }

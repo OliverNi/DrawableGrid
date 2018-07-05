@@ -1,5 +1,6 @@
 ﻿
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 using DrawableGrid.Models;
 using DrawableGrid.Utilities;
@@ -30,7 +31,7 @@ namespace DrawableGrid.Components
         public void Move(Point start, Point end, bool shouldSnapEndToGrid)
         {
             if (shouldSnapEndToGrid)
-                this.Move(start, end);
+                Move(start, end);
             else
                 base.Move(SnappedPointOf(start, _gridSize), end);
         }
@@ -61,6 +62,18 @@ namespace DrawableGrid.Components
             xSnap += point.X;
             ySnap += point.Y;
             return new Point(xSnap, ySnap);
+        }
+
+        public void Hide()
+        {
+            Line.Visibility = Visibility.Hidden;
+            Label.Visibility = Visibility.Hidden;
+        }
+
+        public void Show()
+        {
+            Line.Visibility = Visibility.Visible;
+            Label.Visibility = Visibility.Visible;
         }
     }
 }

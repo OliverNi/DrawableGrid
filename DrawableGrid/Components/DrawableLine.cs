@@ -1,17 +1,24 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Shapes;
+using DrawableGrid.Events;
 using DrawableGrid.Utilities;
-using Brush = System.Windows.Media.Brush;
-using Brushes = System.Windows.Media.Brushes;
 
 namespace DrawableGrid.Components
 {
     public class DrawableLine : Canvas
     {
+        public delegate void LineDragEventHandler(DrawableLine source, LineDragEventArgs e);
+        public delegate void LineDragReleasedEventHandler(DrawableLine source, MouseButtonEventArgs e);
+        public event LineDragEventHandler LineDragged;
+        public event LineDragReleasedEventHandler LineDraggedReleased;
+
         public Line Line { get; }
         protected readonly LengthLabel Label;
+        protected bool IsDragging;
 
         public DrawableLine(Point start, Point end)
             : this(start, end, Brushes.Black) { }
@@ -21,17 +28,18 @@ namespace DrawableGrid.Components
             Line = new Line
             {
                 Stroke = brush,
-                StrokeThickness = 2,
+                StrokeThickness = 6,
                 X1 = start.X,
                 Y1 = start.Y,
                 X2 = end.X,
                 Y2 = end.Y
             };
-         
             Label = new LengthLabel(Line);
             PositionLabelBelowCenterOfLine();
-            this.Children.Add(Label);
-            this.Children.Add(Line);
+            Children.Add(Line);
+            Children.Add(Label);
+
+            Line.MouseDown += OnLineTarget;
         }
 
         public virtual void Move(Point start, Point end)
@@ -52,25 +60,36 @@ namespace DrawableGrid.Components
         {
             var midPoint = LineUtilities.MidPoint(new Point(Line.X1, Line.Y1),
                 new Point(Line.X2, Line.Y2));
-            Canvas.SetLeft(Label, midPoint.X);
-            Canvas.SetTop(Label, midPoint.Y);
-        }
-    }
-
-    public class LengthLabel : Label
-    {
-        private readonly Line _line;
-        public LengthLabel(Line line)
-        {
-            _line = line;
-            this.FontSize = 10;
-            Update();
+            SetLeft(Label, midPoint.X);
+            SetTop(Label, midPoint.Y);
         }
 
-        public void Update()
+        private void OnLineTarget(object source, EventArgs e)
         {
-            this.Content = ((int)Math.Round(LineUtilities.Distance(new Point(_line.X1, _line.Y1),
-                new Point(_line.X2, _line.Y2)))).ToString();
+            var resizeGrip = new LineResizeGrip(LineResizeGrip.DragDirection.End);
+            Children.Add(resizeGrip);
+            resizeGrip.MoveToEndOf(Line);
+
+            resizeGrip.MouseDown += OnLineDrag;
+            resizeGrip.MouseLeftButtonUp += OnLineDragRelease;
+        }
+
+        public void OnLineDrag(object source, MouseButtonEventArgs e)
+        {
+            IsDragging = true;
+            if (source is LineResizeGrip lineResizeGrip)
+            {
+                LineDragged?.Invoke(this, new LineDragEventArgs(lineResizeGrip, LineResizeGrip.DragDirection.End));
+            }  
+        }
+
+        public virtual void OnLineDragRelease(object source, MouseButtonEventArgs e)
+        {
+            if (!IsDragging) return;
+            Children.Remove((UIElement) source);
+            LineDraggedReleased?.Invoke(this, e);
+            UpdateLabel();
+            IsDragging = false;
         }
     }
 }
